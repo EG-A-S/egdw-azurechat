@@ -76,6 +76,7 @@ export const ChatAPIData = async (props: PromptGPTProps) => {
       ],
       model: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
       stream: true,
+      max_tokens: 4096
     });
 
     const stream = OpenAIStream(response, {
@@ -112,9 +113,8 @@ export const ChatAPIData = async (props: PromptGPTProps) => {
 };
 
 const findRelevantDocuments = async (query: string, chatThreadId: string) => {
-  const relevantDocuments = await similaritySearchVectorWithScore(query, 10, {
-    filter: `user eq '${await userHashedId()}' and chatThreadId eq '${chatThreadId}'`,
-  });
+  console.log('szukam dokumentow');
+  const relevantDocuments = await similaritySearchVectorWithScore(query, 10);
 
   return relevantDocuments;
 };
