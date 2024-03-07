@@ -77,6 +77,7 @@ ${userMessage}
         content: _userMessage,
       },
     ],
+    max_tokens: 4096,
   };
 
   return openAI.beta.chat.completions.stream(stream, { signal });
