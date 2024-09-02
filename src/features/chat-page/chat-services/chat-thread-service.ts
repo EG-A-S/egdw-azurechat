@@ -5,6 +5,7 @@ import {
   getCurrentUser,
   userHashedId,
   userSession,
+  userEmail
 } from "@/features/auth-page/helpers";
 import { RedirectToChatThread } from "@/features/common/navigation-helpers";
 import { ServerActionResponse } from "@/features/common/server-action-response";
@@ -30,7 +31,7 @@ export const FindAllChatThreadForCurrentUser = async (): Promise<
   try {
     const querySpec: SqlQuerySpec = {
       query:
-        "SELECT * FROM root r WHERE r.type=@type AND r.userId=@userId AND r.isDeleted=@isDeleted ORDER BY r.createdAt DESC",
+        "SELECT * FROM root r WHERE r.type=@type AND (r.userId=@userId OR ARRAY_CONTAINS(r.coUsersEmails, @userEmail)) AND r.isDeleted=@isDeleted ORDER BY r.createdAt DESC",
       parameters: [
         {
           name: "@type",
@@ -44,12 +45,16 @@ export const FindAllChatThreadForCurrentUser = async (): Promise<
           name: "@isDeleted",
           value: false,
         },
+        {
+          name: "@userEmail",
+          value: await userEmail(),
+        }
       ],
     };
 
     const { resources } = await HistoryContainer()
       .items.query<ChatThreadModel>(querySpec, {
-        partitionKey: await userHashedId(),
+       // partitionKey: await userHashedId(),
       })
       .fetchAll();
     return {
@@ -70,7 +75,7 @@ export const FindChatThreadForCurrentUser = async (
   try {
     const querySpec: SqlQuerySpec = {
       query:
-        "SELECT * FROM root r WHERE r.type=@type AND r.userId=@userId AND r.id=@id AND r.isDeleted=@isDeleted",
+        "SELECT * FROM root r WHERE r.type=@type AND (r.userId=@userId OR ARRAY_CONTAINS(r.coUsersEmails, @userEmail)) AND r.id=@id AND r.isDeleted=@isDeleted",
       parameters: [
         {
           name: "@type",
@@ -88,6 +93,10 @@ export const FindChatThreadForCurrentUser = async (
           name: "@isDeleted",
           value: false,
         },
+        {
+          name: "@userEmail",
+          value: await userEmail(),
+        }
       ],
     };
 
@@ -280,6 +289,7 @@ export const CreateChatThread = async (): Promise<
       name: NEW_CHAT_NAME,
       useName: (await userSession())!.name,
       userId: await userHashedId(),
+      coUsersEmails: [],
       id: uniqueId(),
       createdAt: new Date(),
       lastMessageAt: new Date(),
