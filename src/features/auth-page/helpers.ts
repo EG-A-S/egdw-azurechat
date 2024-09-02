@@ -34,6 +34,15 @@ export const userHashedId = async (): Promise<string> => {
   throw new Error("User not found");
 };
 
+export const userEmail = async(): Promise<string> => {
+  const user = await userSession();
+  if(user)  {
+    return user.email;
+  }
+
+  throw new Error("User not found");
+}
+
 export const hashValue = (value: string): string => {
   const hash = createHash("sha256");
   hash.update(value);

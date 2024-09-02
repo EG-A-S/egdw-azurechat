@@ -15,7 +15,7 @@ export const FindTopChatMessagesForCurrentUser = async (
   try {
     const querySpec: SqlQuerySpec = {
       query:
-        "SELECT TOP @top * FROM root r WHERE r.type=@type AND r.threadId = @threadId AND r.userId=@userId AND r.isDeleted=@isDeleted ORDER BY r.createdAt DESC",
+        "SELECT TOP @top * FROM root r WHERE r.type=@type AND r.threadId = @threadId AND r.isDeleted=@isDeleted ORDER BY r.createdAt DESC",
       parameters: [
         {
           name: "@type",
@@ -66,7 +66,7 @@ export const FindAllChatMessagesForCurrentUser = async (
   try {
     const querySpec: SqlQuerySpec = {
       query:
-        "SELECT * FROM root r WHERE r.type=@type AND r.threadId = @threadId AND r.userId=@userId AND  r.isDeleted=@isDeleted ORDER BY r.createdAt ASC",
+        "SELECT * FROM root r WHERE r.type=@type AND r.threadId = @threadId AND r.isDeleted=@isDeleted ORDER BY r.createdAt ASC",
       parameters: [
         {
           name: "@type",
