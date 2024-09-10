@@ -6,11 +6,13 @@ import { ChatDocumentModel, ChatThreadModel } from "../chat-services/models";
 import { DocumentDetail } from "./document-detail";
 import { ExtensionDetail } from "./extension-detail";
 import { PersonaDetail } from "./persona-detail";
+import { CoUsersDetail } from "./co-users-detail";
 
 interface Props {
   chatThread: ChatThreadModel;
   chatDocuments: Array<ChatDocumentModel>;
   extensions: Array<ExtensionModel>;
+  coUsers: Array<string>;
 }
 
 export const ChatHeader: FC<Props> = (props) => {
@@ -38,6 +40,9 @@ export const ChatHeader: FC<Props> = (props) => {
             installedExtensionIds={props.chatThread.extension}
             chatThreadId={props.chatThread.id}
           />
+          <CoUsersDetail 
+          chatThreadId={props.chatThread.id}
+          coUsers={props.coUsers}/>
         </div>
       </div>
     </div>
