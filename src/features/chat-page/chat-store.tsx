@@ -17,6 +17,8 @@ import {
   AddExtensionToChatThread,
   RemoveExtensionFromChatThread,
   UpdateChatTitle,
+  AddUserToChatThread,
+  RemoveUserFromChatThread
 } from "./chat-services/chat-thread-service";
 import {
   AzureChatCompletion,
@@ -121,6 +123,44 @@ class ChatState {
 
   public updateAutoScroll(value: boolean) {
     this.autoScroll = value;
+  }
+
+  public async AddUserToChatThread(userEmail: string) {
+    this.loading = "loading";
+
+    const response = await AddUserToChatThread({
+      userEmail: userEmail,
+      chatThreadId: this.chatThreadId,
+    });
+    RevalidateCache({
+      page: "chat",
+      type: "layout",
+    });
+
+    if (response.status !== "OK") {
+      showError(response.errors[0].message);
+    }
+
+    this.loading = "idle";
+  }
+
+  public async RemoveUserFromChatThread(userEmail: string) {
+    this.loading = "loading";
+
+    const response = await RemoveUserFromChatThread({
+      userEmail: userEmail,
+      chatThreadId: this.chatThreadId,
+    });
+    RevalidateCache({
+      page: "chat",
+      type: "layout",
+    });
+
+    if (response.status !== "OK") {
+      showError(response.errors[0].message);
+    }
+
+    this.loading = "idle";
   }
 
   private reset() {
