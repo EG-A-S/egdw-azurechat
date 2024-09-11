@@ -1,4 +1,3 @@
-import { ExtensionModel } from "@/features/extensions-page/extension-services/models";
 import { Button } from "@/features/ui/button";
 import { ScrollArea } from "@/features/ui/scroll-area";
 import {
@@ -11,9 +10,8 @@ import {
 import { Input } from "@/features/ui/input";
 import { Plus, Trash } from "lucide-react";
 import { Share2Icon } from "lucide-react";
-import { FC } from "react";
+import { ChangeEvent, FC, useState } from "react";
 import { chatStore } from "../chat-store";
-import { Label } from "@/features/ui/label";
 
 interface Props {
   chatThreadId: string;
@@ -21,7 +19,12 @@ interface Props {
 }
 
 export const CoUsersDetail: FC<Props> = (props) => {
+  const [inputEmailText, setInputEmailText] = useState('');
   const totalCount = props.coUsers?.length ?? 0;
+
+  const handleChange = (event : ChangeEvent<HTMLInputElement>) => {
+    setInputEmailText(event.target.value);
+  };
 
   return (
     <Sheet>
@@ -35,27 +38,29 @@ export const CoUsersDetail: FC<Props> = (props) => {
           <SheetTitle>Sharing conversation</SheetTitle>
         </SheetHeader>
         <ScrollArea className="flex-1 -mx-6 flex" type="always">
-          <div className="flex flex-col gap-4 bg-foreground/[0.02] border p-4 rounded-md ">
-      <div className="flex justify-between items-center gap-2 ">
-        <SheetTitle>Users</SheetTitle>
-        <Button
-          type="button"
-          className="flex gap-2"
-          variant={"outline"}
-          // onClick={() =>
-          //   extensionStore.addEndpointHeader({
-          //     key: "",
-          //     value: "",
-          //   })
-          // }
-        >
-          <Plus size={18} />Add
-        </Button>
-      </div>
-      <Input></Input>
-      <div className="flex gap-2">
-    </div>
-    </div>
+        <form className="flex-1 flex flex-col">
+          <div className="flex flex-col gap-4 bg-foreground/[0.02] border p-4 rounded-md">
+            <div className="flex justify-between items-center gap-2 ">
+              <SheetTitle>Users</SheetTitle>
+              <Button
+                type="button"
+                className="flex gap-2"
+                variant={"outline"}
+                onClick={() => {
+                  if(inputEmailText) {
+                    chatStore.AddUserToChatThread(inputEmailText);
+                    setInputEmailText("");
+                  }
+                }
+              }
+            >
+            <Plus size={18} />Add
+            </Button>
+            </div>
+          <Input placeholder="xxxxx@eg.dk" value={inputEmailText} onChange={handleChange}></Input>
+          </div>
+          </form>
+          <br />
           <div className="pb-6 px-6 flex gap-4 flex-col  flex-1">
             {props.coUsers.map((coUser) => {
               return (
@@ -71,11 +76,9 @@ export const CoUsersDetail: FC<Props> = (props) => {
                     variant={"outline"}
                     size={"icon"}
                     type="button"
-                  //  onClick={() =>
-                  //    extensionStore.removeHeader({
-                    //    headerId: props.header.id,
-                      //})
-                 //   }
+                   onClick={() => 
+                     chatStore.RemoveUserFromChatThread(coUser)
+                   }
                     aria-label="Remove this user"
                   >
                     <Trash size={18} />

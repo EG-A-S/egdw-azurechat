@@ -246,6 +246,38 @@ export const RemoveExtensionFromChatThread = async (props: {
   return response;
 };
 
+export const AddUserToChatThread = async (props: {
+  chatThreadId: string;
+  userEmail: string;
+}): Promise<ServerActionResponse<ChatThreadModel>> => {
+  const response = await FindChatThreadForCurrentUser(props.chatThreadId);
+  if (response.status === "OK") {
+    const chatThread = response.response;
+    chatThread.coUsersEmails.push(props.userEmail);
+
+    return await UpsertChatThread(chatThread);
+  }
+
+  return response;
+};
+
+export const RemoveUserFromChatThread = async (props: {
+  chatThreadId: string;
+  userEmail: string;
+}): Promise<ServerActionResponse<ChatThreadModel>> => {
+  const response = await FindChatThreadForCurrentUser(props.chatThreadId);
+  if (response.status === "OK") {
+    const chatThread = response.response;
+    const userEmailIndex = chatThread.coUsersEmails.indexOf(props.userEmail);
+    if(userEmailIndex > -1)
+      chatThread.coUsersEmails.splice(userEmailIndex, 1);
+
+    return await UpsertChatThread(chatThread);
+  }
+
+  return response;
+};
+
 export const UpsertChatThread = async (
   chatThread: ChatThreadModel
 ): Promise<ServerActionResponse<ChatThreadModel>> => {
