@@ -253,6 +253,9 @@ export const AddUserToChatThread = async (props: {
   const response = await FindChatThreadForCurrentUser(props.chatThreadId);
   if (response.status === "OK") {
     const chatThread = response.response;
+    if(chatThread.coUsersEmails === undefined)
+      chatThread.coUsersEmails = [];
+    
     chatThread.coUsersEmails.push(props.userEmail);
 
     return await UpsertChatThread(chatThread);
