@@ -77,11 +77,11 @@ export const ChatInput = () => {
       />
       <ChatInputActionArea>
         <ChatInputSecondaryActionArea>
-          <AttachFile
+          {/* <AttachFile
             onClick={(formData) =>
               fileStore.onFileChange({ formData, chatThreadId })
             }
-          />
+          /> */}
           <PromptSlider />
         </ChatInputSecondaryActionArea>
         <ChatInputPrimaryActionArea>

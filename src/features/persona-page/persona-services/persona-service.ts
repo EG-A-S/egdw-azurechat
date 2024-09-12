@@ -296,6 +296,7 @@ export const CreatePersonaChat = async (
       useName: user.name,
       userId: await userHashedId(),
       id: "",
+      coUsersEmails: [],
       createdAt: new Date(),
       lastMessageAt: new Date(),
       bookmarked: false,
