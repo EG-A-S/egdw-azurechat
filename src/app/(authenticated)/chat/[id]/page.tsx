@@ -49,7 +49,7 @@ export default async function Home(props: HomeParams) {
       chatThread={chatThreadResponse.response}
       chatDocuments={docsResponse.response}
       extensions={extensionResponse.response}
-      coUsers={chatThreadResponse.response.coUsersEmails}
+      coUsers={chatThreadResponse.response.coUsersEmails ?? []}
     />
   );
 }
