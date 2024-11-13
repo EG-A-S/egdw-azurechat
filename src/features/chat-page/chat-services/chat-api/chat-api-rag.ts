@@ -78,6 +78,8 @@ ${userMessage}
       },
     ],
     max_tokens: 4096,
+    temperature: 0.0,
+    top_p: 1.0,
   };
 
   return openAI.beta.chat.completions.stream(stream, { signal });
