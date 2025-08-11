@@ -74,6 +74,12 @@ export const OpenAIStream = (props: {
         })
         .on("error", async (error) => {
           console.log("🔴 error", error);
+          if (error.message?.includes('content management policy')) {
+            const response: AzureChatCompletion = {
+              type: "error",
+              response: `Your input was filtered by the security policy. Try rephrasing your request.\nOriginal error message: ${error.message}`
+            };
+          }
           const response: AzureChatCompletion = {
             type: "error",
             response: error.message,
