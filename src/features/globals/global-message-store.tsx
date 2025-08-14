@@ -7,9 +7,13 @@ interface MessageProp {
 }
 
 export const showError = (error: string, reload?: () => void) => {
+  const formattedError = error.split('\n').map((line, index) => (
+    <div key={index}>{line}</div>
+  ));
+
   toast({
     variant: "destructive",
-    description: error,
+    description: <div>{formattedError}</div>,
     action: reload ? (
       <ToastAction
         altText="Try again"

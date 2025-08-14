@@ -74,24 +74,28 @@ export const OpenAIStream = (props: {
         })
         .on("error", async (error) => {
           console.log("🔴 error", error);
+          let response: AzureChatCompletion;
           if (error.message?.includes('content management policy')) {
-            const response: AzureChatCompletion = {
+            response = {
               type: "error",
-              response: `Your input was filtered by the security policy. Try rephrasing your request.\nOriginal error message: ${error.message}`
+              response: `Your input was filtered by the security policy. Try rephrasing your request.\n\nOriginal error: ${error.message}`
+            };
+          } else {
+            response = {
+              type: "error",
+              response: error.message,
             };
           }
-          const response: AzureChatCompletion = {
-            type: "error",
-            response: error.message,
-          };
 
-          // if there is an error still save the last message even though it is not complete
-          await CreateChatMessage({
-            name: AI_NAME,
-            content: lastMessage,
-            role: "assistant",
-            chatThreadId: props.chatThread.id,
-          });
+          // if there is an error and we have partial content, save the last message
+          if (lastMessage && lastMessage.trim() !== "") {
+            await CreateChatMessage({
+              name: AI_NAME,
+              content: lastMessage,
+              role: "assistant",
+              chatThreadId: props.chatThread.id,
+            });
+          }
 
           streamResponse(response.type, JSON.stringify(response));
           controller.close();
