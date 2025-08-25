@@ -77,7 +77,7 @@ export const ChatInput = () => {
       />
       <ChatInputActionArea>
         <ChatInputSecondaryActionArea>
-          <AttachFile
+           <AttachFile
             onClick={(formData) =>
               fileStore.onFileChange({ formData, chatThreadId })
             }
@@ -86,13 +86,6 @@ export const ChatInput = () => {
         </ChatInputSecondaryActionArea>
         <ChatInputPrimaryActionArea>
           <ImageInput />
-          <Microphone
-            startRecognition={() => speechToTextStore.startRecognition()}
-            stopRecognition={() => speechToTextStore.stopRecognition()}
-            isPlaying={isPlaying}
-            stopPlaying={() => textToSpeechStore.stopPlaying()}
-            isMicrophoneReady={isMicrophoneReady}
-          />
           {loading === "loading" ? (
             <StopChat stop={() => chatStore.stopGeneratingMessages()} />
           ) : (

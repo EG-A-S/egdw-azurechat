@@ -34,6 +34,7 @@ export const ChatApiExtensions = async (props: {
         },
       ],
       tools: extensions,
+      max_tokens: 4096,
     },
     { signal: signal }
   );
