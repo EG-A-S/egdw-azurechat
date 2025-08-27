@@ -31,7 +31,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
                 <PromptCard 
                   prompt={prompt} 
                   key={prompt.id} 
-                  showContextMenu 
+                  showContextMenu={currentUser.isAdmin} 
                   isUserAdmin={currentUser.isAdmin}
                 />
               );
