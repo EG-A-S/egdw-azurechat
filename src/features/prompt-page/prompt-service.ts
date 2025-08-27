@@ -82,15 +82,31 @@ export const FindAllPrompts = async (): Promise<
   ServerActionResponse<Array<PromptModel>>
 > => {
   try {
-    const querySpec: SqlQuerySpec = {
-      query: "SELECT * FROM root r WHERE r.type=@type",
-      parameters: [
-        {
-          name: "@type",
-          value: PROMPT_ATTRIBUTE,
-        },
-      ],
-    };
+    const user = await getCurrentUser();
+    
+    const querySpec: SqlQuerySpec = user.isAdmin 
+      ? {
+          query: "SELECT * FROM root r WHERE r.type=@type",
+          parameters: [
+            {
+              name: "@type",
+              value: PROMPT_ATTRIBUTE,
+            },
+          ],
+        }
+      : {
+          query: "SELECT * FROM root r WHERE r.type=@type AND r.isPublished=@isPublished",
+          parameters: [
+            {
+              name: "@type",
+              value: PROMPT_ATTRIBUTE,
+            },
+            {
+              name: "@isPublished",
+              value: true,
+            },
+          ],
+        };
 
     const { resources } = await ConfigContainer()
       .items.query<PromptModel>(querySpec)
