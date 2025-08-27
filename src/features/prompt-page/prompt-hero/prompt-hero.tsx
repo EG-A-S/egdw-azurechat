@@ -3,7 +3,11 @@ import { Hero, HeroButton } from "@/features/ui/hero";
 import { Book, BookImage, NotebookPen } from "lucide-react";
 import { promptStore } from "../prompt-store";
 
-export const PromptHero = () => {
+interface PromptHeroProps {
+  showButtons?: boolean;
+}
+
+export const PromptHero = ({ showButtons }: PromptHeroProps) => {
   return (
     <Hero
       title={
@@ -14,6 +18,7 @@ export const PromptHero = () => {
       description={
         "Prompt templates are statements or questions meant to help users get creative without having to come up with ideas from scratch."
       }
+      showButtons={showButtons}
     >
       <HeroButton
         title="Add New Prompt"

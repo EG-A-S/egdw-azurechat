@@ -23,7 +23,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
   return (
     <ScrollArea className="flex-1">
       <main className="flex flex-1 flex-col">
-        <PromptHero />
+        <PromptHero showButtons={currentUser.isAdmin} />
         <div className="container max-w-4xl py-3">
           <div className="grid grid-cols-3 gap-3">
             {promptsResponse.response.map((prompt) => {
@@ -38,7 +38,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
             })}
           </div>
         </div>
-        <AddPromptSlider />
+        {currentUser.isAdmin && <AddPromptSlider />}
       </main>
     </ScrollArea>
   );
