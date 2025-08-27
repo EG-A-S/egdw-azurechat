@@ -1,5 +1,6 @@
 import { FC } from "react";
 
+import { getCurrentUser } from "../auth-page/helpers";
 import { DisplayError } from "../ui/error/display-error";
 import { ScrollArea } from "../ui/scroll-area";
 import { AddPromptSlider } from "./add-new-prompt";
@@ -13,6 +14,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
   props
 ) => {
   const promptsResponse = await FindAllPrompts();
+  const currentUser = await getCurrentUser();
 
   if (promptsResponse.status !== "OK") {
     return <DisplayError errors={promptsResponse.errors} />;
@@ -26,7 +28,12 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
           <div className="grid grid-cols-3 gap-3">
             {promptsResponse.response.map((prompt) => {
               return (
-                <PromptCard prompt={prompt} key={prompt.id} showContextMenu />
+                <PromptCard 
+                  prompt={prompt} 
+                  key={prompt.id} 
+                  showContextMenu 
+                  isUserAdmin={currentUser.isAdmin}
+                />
               );
             })}
           </div>
