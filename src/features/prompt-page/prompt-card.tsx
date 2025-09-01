@@ -8,14 +8,13 @@ interface Props {
   prompt: PromptModel;
   showContextMenu: boolean;
   isUserAdmin: boolean;
+  currentUserId: string;
 }
 
 export const PromptCard: FC<Props> = (props) => {
   const { prompt, isUserAdmin } = props;
   
-  const borderStyle = isUserAdmin 
-    ? (prompt.isPublished ? "border-primary" : "border-destructive")
-    : "";
+  const borderStyle = prompt.isPublished ? "border-primary" : "border-destructive";
     
   return (
     <Card 
@@ -26,7 +25,7 @@ export const PromptCard: FC<Props> = (props) => {
         <CardTitle className="flex-1">{prompt.name}</CardTitle>
         {props.showContextMenu && (
           <div>
-            <PromptCardContextMenu prompt={prompt} />
+            <PromptCardContextMenu prompt={prompt} currentUserId={props.currentUserId} />
           </div>
         )}
       </CardHeader>

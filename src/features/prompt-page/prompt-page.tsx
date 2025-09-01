@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import { getCurrentUser } from "../auth-page/helpers";
+import { getCurrentUser, userHashedId } from "../auth-page/helpers";
 import { DisplayError } from "../ui/error/display-error";
 import { ScrollArea } from "../ui/scroll-area";
 import { AddPromptSlider } from "./add-new-prompt";
@@ -15,6 +15,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
 ) => {
   const promptsResponse = await FindAllPrompts();
   const currentUser = await getCurrentUser();
+  const currentUserId = await userHashedId();
 
   if (promptsResponse.status !== "OK") {
     return <DisplayError errors={promptsResponse.errors} />;
@@ -23,7 +24,7 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
   return (
     <ScrollArea className="flex-1">
       <main className="flex flex-1 flex-col">
-        <PromptHero showButtons={currentUser.isAdmin} />
+        <PromptHero showButtons={true} />
         <div className="container max-w-4xl py-3">
           <div className="grid grid-cols-3 gap-3">
             {promptsResponse.response.map((prompt) => {
@@ -31,14 +32,15 @@ export const ChatSamplePromptPage: FC<ChatSamplePromptProps> = async (
                 <PromptCard 
                   prompt={prompt} 
                   key={prompt.id} 
-                  showContextMenu={currentUser.isAdmin} 
+                  showContextMenu={true} 
                   isUserAdmin={currentUser.isAdmin}
+                  currentUserId={currentUserId}
                 />
               );
             })}
           </div>
         </div>
-        {currentUser.isAdmin && <AddPromptSlider />}
+        <AddPromptSlider />
       </main>
     </ScrollArea>
   );
