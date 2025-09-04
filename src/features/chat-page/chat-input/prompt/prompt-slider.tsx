@@ -53,7 +53,10 @@ export const PromptSlider: FC<SliderProps> = (props) => {
               <Card
                 key={prompt.id}
                 className="flex flex-col cursor-pointer hover:bg-secondary/80 mt-2"
-                onClick={() => inputPromptStore.selectPrompt(prompt)}
+                onClick={() => inputPromptStore.selectPrompt({
+                  ...prompt,
+                  sharedWith: [...prompt.sharedWith]
+                })}
               >
                 <CardHeader className="flex flex-row">
                   <CardTitle className="flex-1">{prompt.name}</CardTitle>

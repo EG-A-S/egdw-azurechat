@@ -31,7 +31,7 @@ export const PromptHero = ({ showButtons }: PromptHeroProps) => {
         description="Image of miniature colourful city "
         icon={<BookImage />}
         onClick={() =>
-          promptStore.updatePrompt({
+          promptStore.updatePromptFromBase({
             createdAt: new Date(),
             id: "",
             name: "Whimsical City",
@@ -48,7 +48,7 @@ export const PromptHero = ({ showButtons }: PromptHeroProps) => {
         description="Problem Framing for a new product"
         icon={<NotebookPen />}
         onClick={() =>
-          promptStore.updatePrompt({
+          promptStore.updatePromptFromBase({
             createdAt: new Date(),
             id: "",
             name: "Problem Framing",
