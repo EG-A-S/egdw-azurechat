@@ -18,8 +18,11 @@ export const PromptModelSchema = z.object({
       message: "Description cannot be empty",
     })
     .refine(refineFromEmpty, "Description cannot be empty"),
-  createdAt: z.date(),
+  createdAt: z.union([z.date(), z.string()]).transform((val) => 
+    typeof val === 'string' ? new Date(val) : val
+  ),
   isPublished: z.boolean(),
   userId: z.string(),
+  sharedWith: z.array(z.string()).default([]),
   type: z.literal(PROMPT_ATTRIBUTE),
 });
