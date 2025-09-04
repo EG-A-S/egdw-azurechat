@@ -1,11 +1,11 @@
 import { proxy, useSnapshot } from "valtio";
 import { RevalidateCache } from "../common/navigation-helpers";
 import { ServerActionResponse } from "../common/server-action-response";
-import { PROMPT_ATTRIBUTE, PromptModel } from "./models";
+import { PROMPT_ATTRIBUTE, PromptModel, BasePromptModel, BasePromptModelSchema, upgradePromptModel } from "./models";
 import { CreatePrompt, UpsertPrompt } from "./prompt-service";
 
 class PromptState {
-  private defaultModel: PromptModel = {
+  private defaultBaseModel: BasePromptModel = {
     id: "",
     name: "",
     description: "",
@@ -16,13 +16,11 @@ class PromptState {
   };
 
   public errors: string[] = [];
-  public prompt: PromptModel = { ...this.defaultModel };
+  public prompt: PromptModel = upgradePromptModel(this.defaultBaseModel);
   public isOpened: boolean = false;
 
   public newPrompt() {
-    this.prompt = {
-      ...this.defaultModel,
-    };
+    this.prompt = upgradePromptModel(this.defaultBaseModel);
     this.isOpened = true;
   }
 
@@ -34,6 +32,11 @@ class PromptState {
     this.prompt = {
       ...prompt,
     };
+    this.isOpened = true;
+  }
+
+  public updatePromptFromBase(basePrompt: BasePromptModel) {
+    this.prompt = upgradePromptModel(basePrompt);
     this.isOpened = true;
   }
 
@@ -56,7 +59,8 @@ export const addOrUpdatePrompt = async (
 ): Promise<ServerActionResponse<PromptModel>> => {
   promptStore.updateErrors([]);
 
-  const model = FormDataToPromptModel(formData);
+  const baseModel = FormDataToPromptModel(formData);
+  const model = upgradePromptModel(baseModel);
 
   const response =
     model.id && model.id !== ""
@@ -74,14 +78,14 @@ export const addOrUpdatePrompt = async (
   return response;
 };
 
-export const FormDataToPromptModel = (formData: FormData): PromptModel => {
-  return {
+export const FormDataToPromptModel = (formData: FormData): BasePromptModel => {
+  return BasePromptModelSchema.parse({
     id: formData.get("id") as string,
     name: formData.get("name") as string,
     description: formData.get("description") as string,
     isPublished: formData.get("isPublished") === "on" ? true : false,
-    userId: "", // the user id is set on the server once the user is authenticated
+    userId: "",
     createdAt: new Date(),
     type: PROMPT_ATTRIBUTE,
-  };
+  });
 };
