@@ -63,7 +63,7 @@ export const CopyButton = ({
       title={title}
       aria-label={title}
       onClick={handleCopy}
-      className={className}
+      className={`${className} focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`}
     >
       {isIconChecked ? (
         <CheckIcon size={iconSize} />

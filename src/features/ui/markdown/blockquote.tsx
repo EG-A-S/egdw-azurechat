@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import { cn } from "@/ui/lib";
 import { CopyButton } from "../copy-button";
 
@@ -11,7 +12,7 @@ const extractTextContent = (node: React.ReactNode): string => {
     return node.map(extractTextContent).join('');
   }
   
-  if (typeof node === 'object' && 'props' in node) {
+  if (React.isValidElement(node)) {
     return extractTextContent(node.props.children);
   }
   
