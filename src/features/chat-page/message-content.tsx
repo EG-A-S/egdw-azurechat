@@ -1,4 +1,4 @@
-import { Markdown } from "@/features/ui/markdown/markdown";
+import { SectionedMarkdown } from "@/features/ui/markdown/sectioned-markdown";
 import { FunctionSquare } from "lucide-react";
 import React from "react";
 import {
@@ -23,10 +23,10 @@ const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
   if (message.role === "assistant" || message.role === "user") {
     return (
       <>
-        <Markdown
+        <SectionedMarkdown
           content={message.content}
           onCitationClick={CitationAction}
-        ></Markdown>
+        />
         {message.multiModalImage && <img src={message.multiModalImage} />}
       </>
     );
