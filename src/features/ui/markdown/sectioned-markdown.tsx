@@ -1,15 +1,9 @@
 import Markdoc from "@markdoc/markdoc";
 import React, { FC } from "react";
-import { Blockquote } from "./blockquote";
-import { Citation } from "./citation";
-import { CodeBlock } from "./code-block";
-import { citationConfig } from "./config";
-import { Heading } from "./heading";
+import { citationConfig, markdownComponents } from "./config";
 import { MarkdownProvider } from "./markdown-context";
-import { Paragraph } from "./paragraph";
 import { parseIntoSections } from "./section-parser";
 import { SectionWrapper } from "./section-wrapper";
-import { ThematicBreak } from "./thematic-break";
 
 interface Props {
   content: string;
@@ -31,7 +25,7 @@ export const SectionedMarkdown: FC<Props> = (props) => {
     return (
       <MarkdownProvider onCitationClick={props.onCitationClick}>
         {Markdoc.renderers.react(content, React, {
-          components: { Citation, Paragraph, CodeBlock, Heading, ThematicBreak, Blockquote },
+          components: markdownComponents,
         })}
       </MarkdownProvider>
     );
@@ -51,7 +45,7 @@ export const SectionedMarkdown: FC<Props> = (props) => {
             sectionContent={section.rawContent}
           >
             {Markdoc.renderers.react(content, React, {
-              components: { Citation, Paragraph, CodeBlock, Heading, ThematicBreak, Blockquote },
+              components: markdownComponents,
             })}
           </SectionWrapper>
         );

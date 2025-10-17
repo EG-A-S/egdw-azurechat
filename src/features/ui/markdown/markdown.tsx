@@ -1,12 +1,7 @@
 import Markdoc from "@markdoc/markdoc";
 import React, { FC } from "react";
-import { Citation } from "./citation";
-import { CodeBlock } from "./code-block";
-import { citationConfig } from "./config";
-import { Heading } from "./heading";
+import { citationConfig, markdownComponents } from "./config";
 import { MarkdownProvider } from "./markdown-context";
-import { Paragraph } from "./paragraph";
-import { ThematicBreak } from "./thematic-break";
 
 interface Props {
   content: string;
@@ -26,7 +21,7 @@ export const Markdown: FC<Props> = (props) => {
   const WithContext = () => (
     <MarkdownProvider onCitationClick={props.onCitationClick}>
       {Markdoc.renderers.react(content, React, {
-        components: { Citation, Paragraph, CodeBlock, Heading, ThematicBreak },
+        components: markdownComponents,
       })}
     </MarkdownProvider>
   );

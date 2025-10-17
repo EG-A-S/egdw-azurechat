@@ -1,10 +1,10 @@
 import { Config } from "@markdoc/markdoc";
-import { blockquote } from "./blockquote";
-import { citation } from "./citation";
-import { fence } from "./code-block";
-import { heading } from "./heading";
-import { paragraph } from "./paragraph";
-import { thematicBreak } from "./thematic-break";
+import { Blockquote, blockquote } from "./blockquote";
+import { Citation, citation } from "./citation";
+import { CodeBlock, fence } from "./code-block";
+import { Heading, heading } from "./heading";
+import { Paragraph, paragraph } from "./paragraph";
+import { ThematicBreak, thematicBreak } from "./thematic-break";
 
 export const citationConfig: Config = {
   nodes: {
@@ -17,4 +17,13 @@ export const citationConfig: Config = {
   tags: {
     citation,
   },
+};
+
+export const markdownComponents = {
+  Citation,
+  Paragraph,
+  CodeBlock,
+  Heading,
+  ThematicBreak,
+  Blockquote,
 };
