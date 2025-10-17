@@ -27,7 +27,11 @@ const MessageContent: React.FC<MessageContentProps> = ({ message }) => {
           content={message.content}
           onCitationClick={CitationAction}
         />
-        {message.multiModalImage && <img src={message.multiModalImage} />}
+        {message.multiModalImage && 
+        <img
+          src={message.multiModalImage}
+          alt={`Image for message from ${message.role}${message.name ? ` (${message.name})` : ""}`}
+          />}
       </>
     );
   }

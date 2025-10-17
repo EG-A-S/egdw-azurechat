@@ -61,6 +61,7 @@ export const CopyButton = ({
       variant="ghost"
       size={size}
       title={title}
+      aria-label={title}
       onClick={handleCopy}
       className={className}
     >

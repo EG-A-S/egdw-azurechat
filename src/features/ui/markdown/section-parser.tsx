@@ -82,14 +82,17 @@ function splitByHeadings(content: string): Section[] {
 function shouldTreatAsSingleSection(content: string): boolean {
   const lines = content.trim().split('\n').filter(line => line.trim().length > 0);
   
+  // Very short content (3 lines or fewer) should stay as one section
   if (lines.length <= 3) {
     return true;
   }
   
   const hasBlockquotes = content.includes('> ');
   const hasCodeBlocks = content.includes('```');
+  // Short responses (under 300 chars) are easier to read as a single block
   const isShortResponse = content.length < 300;
   
+  // Content with special formatting should remain intact as single sections
   if (hasBlockquotes || hasCodeBlocks || isShortResponse) {
     return true;
   }
@@ -101,6 +104,7 @@ function splitByParagraphs(content: string): Section[] {
   const sections: Section[] = [];
   const paragraphs = content.split(/\n\s*\n/).filter(p => p.trim().length > 0);
   
+  // Content with 2 or fewer paragraphs is too short to benefit from splitting
   if (paragraphs.length <= 2) {
     return [{
       content: content.trim(),

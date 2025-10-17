@@ -24,9 +24,11 @@ export const SectionedMarkdown: FC<Props> = (props) => {
 
     return (
       <MarkdownProvider onCitationClick={props.onCitationClick}>
-        {Markdoc.renderers.react(content, React, {
-          components: markdownComponents,
-        })}
+        <SectionWrapper sectionContent={props.content}>
+          {Markdoc.renderers.react(content, React, {
+            components: markdownComponents,
+          })}
+        </SectionWrapper>
       </MarkdownProvider>
     );
   }

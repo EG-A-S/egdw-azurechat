@@ -16,10 +16,11 @@ interface HeadingProps {
 }
 
 export const Heading = ({ level, children, className }: HeadingProps) => {
-  const HeadingTag = `h${level}` as keyof JSX.IntrinsicElements;
+  const validLevel = Math.max(1, Math.min(6, level));
+  const HeadingTag = `h${validLevel}` as keyof JSX.IntrinsicElements;
 
   return (
-    <HeadingTag className={cn(headingStyles[level as keyof typeof headingStyles] || headingStyles[1], className)}>
+    <HeadingTag className={cn(headingStyles[validLevel as keyof typeof headingStyles], className)}>
       {children}
     </HeadingTag>
   );
