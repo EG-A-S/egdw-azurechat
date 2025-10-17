@@ -69,7 +69,7 @@ export const ChatMessageArea = (props: {
 
   return (
     <div className="flex flex-col">
-      <div className="h-7 flex items-center justify-between">
+      <div className="h-7 flex items-center">
         <div className="flex gap-3">
           {profile}
           <div
@@ -83,27 +83,25 @@ export const ChatMessageArea = (props: {
             {props.profileName}
           </div>
         </div>
-        <div className=" h-7 flex items-center justify-between">
-          <div>
-            <Button
-              variant={"ghost"}
-              size={"sm"}
-              title="Copy text"
-              className="justify-right flex"
-              onClick={handleButtonClick}
-            >
-              {isIconChecked ? (
-                <CheckIcon size={16} />
-              ) : (
-                <ClipboardIcon size={16} />
-              )}
-            </Button>
-          </div>
-        </div>
       </div>
       <div className="flex flex-col gap-2 flex-1 px-10">
         <div className="prose prose-slate dark:prose-invert whitespace-break-spaces prose-p:leading-relaxed prose-pre:p-0 max-w-none">
           {props.children}
+        </div>
+        <div className="flex justify-end">
+          <Button
+            variant={"ghost"}
+            size={"sm"}
+            title="Copy text"
+            className="justify-right flex"
+            onClick={handleButtonClick}
+          >
+            {isIconChecked ? (
+              <CheckIcon size={16} />
+            ) : (
+              <ClipboardIcon size={16} />
+            )}
+          </Button>
         </div>
       </div>
     </div>
