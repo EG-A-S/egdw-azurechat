@@ -9,7 +9,9 @@ import { useChatScrollAnchor } from "@/features/ui/chat/chat-message-area/use-ch
 import { useSession } from "next-auth/react";
 import { FC, useEffect, useRef } from "react";
 import { ExtensionModel } from "../extensions-page/extension-services/models";
+import { AiIdentificationMessage } from "./ai-identification-message";
 import { ChatHeader } from "./chat-header/chat-header";
+import { GdprBanner } from "./gdpr-banner";
 import {
   ChatDocumentModel,
   ChatMessageModel,
@@ -50,8 +52,13 @@ export const ChatPage: FC<ChatPageProps> = (props) => {
         extensions={props.extensions}
         coUsers={props.coUsers}
       />
+      <GdprBanner chatThreadId={props.chatThread.id} />
       <ChatMessageContainer ref={current}>
         <ChatMessageContentArea>
+          <AiIdentificationMessage
+            chatThreadId={props.chatThread.id}
+            hasMessages={props.messages.length > 0}
+          />
           {messages.map((message) => {
             return (
               <ChatMessageArea
