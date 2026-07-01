@@ -2,7 +2,10 @@
 import "server-only";
 
 import { OpenAIInstance } from "@/features/common/services/openai";
-import { ChatCompletionStreamingRunner } from "openai/resources/beta/chat/completions";
+import {
+  ChatCompletionStreamingRunner,
+  ChatCompletionStreamParams,
+} from "openai/resources/beta/chat/completions";
 import { ChatThreadModel } from "../models";
 export const ChatApiMultimodal = (props: {
   chatThread: ChatThreadModel;
@@ -18,7 +21,7 @@ export const ChatApiMultimodal = (props: {
     {
       model: "",
       stream: true,
-      max_tokens: 4096,
+      max_completion_tokens: 4096,
       messages: [
         {
           role: "system",
@@ -39,7 +42,9 @@ export const ChatApiMultimodal = (props: {
           ],
         },
       ],
-    },
+      // GPT-5 models require max_completion_tokens instead of max_tokens. This
+      // property is not yet in the openai@4.26 SDK types, so we assert the type.
+    } as ChatCompletionStreamParams,
     { signal }
   );
 };
