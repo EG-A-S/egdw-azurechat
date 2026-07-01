@@ -63,7 +63,7 @@ question:
 ${userMessage}
 `;
 
-  const stream: ChatCompletionStreamParams = {
+  const stream = {
     model: "",
     stream: true,
     messages: [
@@ -77,10 +77,12 @@ ${userMessage}
         content: _userMessage,
       },
     ],
-    max_tokens: 4096,
+    // GPT-5 models require max_completion_tokens instead of max_tokens. This
+    // property is not yet in the openai@4.26 SDK types, so we assert the type.
+    max_completion_tokens: 4096,
     temperature: 0.0,
     top_p: 1.0,
-  };
+  } as ChatCompletionStreamParams;
 
   return openAI.beta.chat.completions.stream(stream, { signal });
 };

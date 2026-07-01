@@ -4,7 +4,10 @@ import "server-only";
 import { OpenAIInstance } from "@/features/common/services/openai";
 import { FindExtensionByID } from "@/features/extensions-page/extension-services/extension-service";
 import { RunnableToolFunction } from "openai/lib/RunnableFunction";
-import { ChatCompletionStreamingRunner } from "openai/resources/beta/chat/completions";
+import {
+  ChatCompletionStreamingRunner,
+  ChatCompletionStreamingToolRunnerParams,
+} from "openai/resources/beta/chat/completions";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { ChatThreadModel } from "../models";
 export const ChatApiExtensions = async (props: {
@@ -34,8 +37,10 @@ export const ChatApiExtensions = async (props: {
         },
       ],
       tools: extensions,
-      max_tokens: 4096,
-    },
+      // GPT-5 models require max_completion_tokens instead of max_tokens. This
+      // property is not yet in the openai@4.26 SDK types, so we assert the type.
+      max_completion_tokens: 4096,
+    } as ChatCompletionStreamingToolRunnerParams<any>,
     { signal: signal }
   );
 };
