@@ -1,0 +1,62 @@
+# SonarQube security scan (EDC-5586 / EDC-5599)
+# Scans release/egdw (no release tags) for vulnerabilities and security hotspots.
+# Next.js/TypeScript and the Bicep infrastructure (infra/) are analysed from source.
+# Security analysis only: no tests, no coverage. Does not replace any existing pipeline.
+name: SonarQube Security Scan
+
+on:
+  push:
+    branches: ['release/egdw']
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: 'Verbose scanner logging (shows indexed files and languages)'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sonarqube-security-scan
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    name: SonarQube security scan
+    # Only release/egdw is scanned, so a manual run from another branch can never replace
+    # the release/egdw analysis (Community Build has one analysis per project).
+    if: github.ref == 'refs/heads/release/egdw'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PROJECT_KEY: ${{ github.event.repository.name }}-SonarQube-Security-scan
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Write scan summary
+        id: ref
+        shell: bash
+        run: |
+          echo "ref=$GITHUB_REF_NAME" >> "$GITHUB_OUTPUT"
+          echo "### SonarQube security scan: \`$GITHUB_REF_NAME\` ($(git rev-parse --short HEAD))" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: SonarQube analysis
+        # Same pinned version as EG-A-S/egdw-shared-workflows reusable-sonarqube-scan.yml
+        uses: SonarSource/sonarqube-scan-action@713881670b6b3676cda39549040e2d88c70d582e # v8.2.0
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ vars.SONAR_HOST_URL }}
+        with:
+          args: >
+            -Dsonar.projectKey=${{ env.PROJECT_KEY }}
+            -Dsonar.projectName=${{ env.PROJECT_KEY }}
+            -Dsonar.projectVersion=${{ steps.ref.outputs.ref }}
+            -Dsonar.verbose=${{ inputs.debug == true }}
+            -Dsonar.sources=src,infra
+            -Dsonar.exclusions=src/node_modules/**,src/.next/**,src/public/**
