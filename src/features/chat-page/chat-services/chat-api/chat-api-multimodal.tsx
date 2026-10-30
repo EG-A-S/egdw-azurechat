@@ -1,11 +1,10 @@
-"use server";
 import "server-only";
 
 import { OpenAIInstance } from "@/features/common/services/openai";
 import {
   ChatCompletionStreamingRunner,
   ChatCompletionStreamParams,
-} from "openai/resources/beta/chat/completions";
+} from "openai/resources/chat/completions";
 import { ChatThreadModel } from "../models";
 export const ChatApiMultimodal = (props: {
   chatThread: ChatThreadModel;
@@ -17,7 +16,7 @@ export const ChatApiMultimodal = (props: {
 
   const openAI = OpenAIInstance();
 
-  return openAI.beta.chat.completions.stream(
+  return openAI.chat.completions.stream(
     {
       model: "",
       stream: true,
