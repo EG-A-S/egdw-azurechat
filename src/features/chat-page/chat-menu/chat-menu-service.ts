@@ -14,7 +14,7 @@ import { ChatThreadModel } from "../chat-services/models";
 
 export const DeleteChatThreadByID = async (chatThreadID: string) => {
   await SoftDeleteChatThreadForCurrentUser(chatThreadID);
-  RedirectToPage("chat");
+  await RedirectToPage("chat");
 };
 
 export const DeleteAllChatThreads = async (): Promise<
@@ -29,7 +29,7 @@ export const DeleteAllChatThreads = async (): Promise<
     });
 
     await Promise.all(promise);
-    RevalidateCache({
+    await RevalidateCache({
       page: "chat",
       type: "layout",
     });
@@ -51,7 +51,7 @@ export const UpdateChatThreadTitle = async (props: {
     name: props.name,
   });
 
-  RevalidateCache({
+  await RevalidateCache({
     page: "chat",
     type: "layout",
   });
@@ -65,7 +65,7 @@ export const BookmarkChatThread = async (props: {
     bookmarked: !props.chatThread.bookmarked,
   });
 
-  RevalidateCache({
+  await RevalidateCache({
     page: "chat",
     type: "layout",
   });

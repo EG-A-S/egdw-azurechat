@@ -4,7 +4,7 @@ interface ContextProps {
   onCitationClick?: (
     previousState: any,
     formData: FormData
-  ) => Promise<JSX.Element>;
+  ) => Promise<React.JSX.Element>;
 }
 
 const Context = createContext<ContextProps | null>(null);
@@ -13,7 +13,7 @@ interface ProviderProps extends PropsWithChildren {
   onCitationClick: (
     previousState: any,
     formData: FormData
-  ) => Promise<JSX.Element>;
+  ) => Promise<React.JSX.Element>;
 }
 
 export const MarkdownProvider: FC<ProviderProps> = (props: ProviderProps) => {

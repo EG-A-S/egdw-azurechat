@@ -7,7 +7,7 @@ import { RunnableToolFunction } from "openai/lib/RunnableFunction";
 import {
   ChatCompletionStreamingRunner,
   ChatCompletionStreamingToolRunnerParams,
-} from "openai/resources/beta/chat/completions";
+} from "openai/resources/chat/completions";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { ChatThreadModel } from "../models";
 export const ChatApiExtensions = async (props: {
@@ -21,7 +21,7 @@ export const ChatApiExtensions = async (props: {
 
   const openAI = OpenAIInstance();
   const systemMessage = await extensionsSystemMessage(chatThread);
-  return openAI.beta.chat.completions.runTools(
+  return openAI.chat.completions.runTools(
     {
       model: "",
       stream: true,

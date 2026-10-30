@@ -11,7 +11,7 @@ const requireAuth: string[] = [
 ];
 const requireAdmin: string[] = ["/reporting"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const res = NextResponse.next();
   const pathname = request.nextUrl.pathname;
 
@@ -38,7 +38,7 @@ export async function middleware(request: NextRequest) {
   return res;
 }
 
-// note that middleware is not applied to api/auth as this is required to logon (i.e. requires anon access)
+// note that the proxy is not applied to api/auth as this is required to logon (i.e. requires anon access)
 export const config = {
   matcher: [
     "/unauthorized/:path*",

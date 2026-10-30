@@ -112,7 +112,7 @@ resource webApp 'Microsoft.Web/sites@2020-06-01' = {
     serverFarmId: appServicePlan.id
     httpsOnly: true
     siteConfig: {
-      linuxFxVersion: 'node|18-lts'
+      linuxFxVersion: 'node|24-lts'
       alwaysOn: true
       appCommandLine: 'next start'
       ftpsState: 'Disabled'
@@ -447,7 +447,7 @@ resource llmdeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05
   name: deployment.name
   properties: {
     model: deployment.model
-    raiPolicyName: contains(deployment, 'raiPolicyName') ? deployment.raiPolicyName : null
+    raiPolicyName: deployment.?raiPolicyName ?? null
   }
   sku: contains(deployment, 'sku') ? deployment.sku : {
     name: 'Standard'

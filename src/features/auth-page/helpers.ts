@@ -52,7 +52,7 @@ export const hashValue = (value: string): string => {
 export const redirectIfAuthenticated = async () => {
   const user = await userSession();
   if (user) {
-    RedirectToPage("chat");
+    await RedirectToPage("chat");
   }
 };
 
