@@ -13,7 +13,7 @@ const extractTextContent = (node: React.ReactNode): string => {
   }
   
   if (React.isValidElement(node)) {
-    return extractTextContent(node.props.children);
+    return extractTextContent((node.props as { children?: React.ReactNode }).children);
   }
   
   return '';

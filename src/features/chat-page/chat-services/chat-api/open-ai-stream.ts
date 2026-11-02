@@ -1,5 +1,5 @@
 import { AI_NAME } from "@/features/theme/theme-config";
-import { ChatCompletionStreamingRunner } from "openai/resources/beta/chat/completions";
+import { ChatCompletionStreamingRunner } from "openai/resources/chat/completions";
 import { CreateChatMessage } from "../chat-message-service";
 import {
   AzureChatCompletion,
@@ -37,7 +37,7 @@ export const OpenAIStream = (props: {
             streamResponse(response.type, JSON.stringify(response));
           }
         })
-        .on("functionCall", async (functionCall) => {
+        .on("functionToolCall", async (functionCall) => {
           await CreateChatMessage({
             name: functionCall.name,
             content: functionCall.arguments,
@@ -51,7 +51,7 @@ export const OpenAIStream = (props: {
           };
           streamResponse(response.type, JSON.stringify(response));
         })
-        .on("functionCallResult", async (functionCallResult) => {
+        .on("functionToolCallResult", async (functionCallResult) => {
           const response: AzureChatCompletion = {
             type: "functionCallResult",
             response: functionCallResult,

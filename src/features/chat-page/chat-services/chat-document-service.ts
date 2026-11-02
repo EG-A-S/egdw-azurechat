@@ -177,7 +177,7 @@ export const CreateChatDocument = async (
 
     const { resource } =
       await HistoryContainer().items.upsert<ChatDocumentModel>(modelToSave);
-    RevalidateCache({
+    await RevalidateCache({
       page: "chat",
       params: chatThreadID,
     });

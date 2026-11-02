@@ -1,9 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: "standalone",
-  experimental: {
-    serverComponentsExternalPackages: ["@azure/storage-blob"],
-  },
+  agentRules: false,
+  serverExternalPackages: ["@azure/storage-blob", "@azure/identity"],
 };
 
 module.exports = nextConfig;

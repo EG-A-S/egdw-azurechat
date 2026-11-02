@@ -90,7 +90,7 @@ async function executeCreateImage(
   }
 
   // Check the response is valid
-  if (response.data[0].b64_json === undefined) {
+  if (response.data?.[0]?.b64_json === undefined) {
     return {
       error:
         "There was an error creating the image: Invalid API response received. Return this message to the user and halt execution.",
@@ -104,11 +104,11 @@ async function executeCreateImage(
     await UploadImageToStore(
       threadId,
       imageName,
-      Buffer.from(response.data[0].b64_json, "base64")
+      Buffer.from(response.data?.[0]?.b64_json ?? "", "base64")
     );
 
     const updated_response = {
-      revised_prompt: response.data[0].revised_prompt,
+      revised_prompt: response.data?.[0]?.revised_prompt,
       url: GetImageUrl(threadId, imageName),
     };
 

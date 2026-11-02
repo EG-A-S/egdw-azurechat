@@ -2,7 +2,7 @@ import { chatStore, useChat } from "@/features/chat-page/chat-store";
 import { RefObject, useEffect } from "react";
 
 export const useChatScrollAnchor = (props: {
-  ref: RefObject<HTMLDivElement>;
+  ref: RefObject<HTMLDivElement | null>;
 }) => {
   const { ref } = props;
 

@@ -6,7 +6,7 @@ import { OpenAIInstance } from "@/features/common/services/openai";
 import {
   ChatCompletionStreamingRunner,
   ChatCompletionStreamParams,
-} from "openai/resources/beta/chat/completions";
+} from "openai/resources/chat/completions";
 import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 import { SimilaritySearch } from "../azure-ai-search/azure-ai-search";
 import { CreateCitations, FormatCitations } from "../citation-service";
@@ -84,5 +84,5 @@ ${userMessage}
     top_p: 1.0,
   } as ChatCompletionStreamParams;
 
-  return openAI.beta.chat.completions.stream(stream, { signal });
+  return openAI.chat.completions.stream(stream, { signal });
 };
